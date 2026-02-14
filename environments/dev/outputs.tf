@@ -20,6 +20,16 @@ output "destination_bucket_name" {
   value       = module.s3_destination.bucket_name
 }
 
+output "frontend_bucket_name" {
+  description = "Name of the frontend S3 bucket for static website hosting"
+  value       = module.s3_frontend.bucket_name
+}
+
+output "frontend_website_endpoint" {
+  description = "Website endpoint URL for the frontend application"
+  value       = module.s3_frontend.website_endpoint
+}
+
 # DynamoDB Outputs
 # output "dynamodb_table_name" {
 #   description = "Name of the DynamoDB table for books"

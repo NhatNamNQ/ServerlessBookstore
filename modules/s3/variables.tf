@@ -45,6 +45,36 @@ variable "cors_max_age_seconds" {
   default     = 3000
 }
 
+variable "enable_static_website_hosting" {
+  description = "Enable static website hosting on the bucket"
+  type        = bool
+  default     = false
+}
+
+variable "index_document" {
+  description = "Name of the index document for static website hosting"
+  type        = string
+  default     = "index.html"
+}
+
+variable "error_document" {
+  description = "Name of the error document for static website hosting"
+  type        = string
+  default     = "error.html"
+}
+
+variable "enable_public_access" {
+  description = "Enable public access to bucket for static website hosting"
+  type        = bool
+  default     = false
+}
+
+variable "bucket_policy_statement" {
+  description = "Custom bucket policy statement (optional)"
+  type        = any
+  default     = null
+}
+
 variable "tags" {
   description = "Tags to apply to the bucket"
   type        = map(string)

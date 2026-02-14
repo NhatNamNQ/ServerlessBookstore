@@ -13,6 +13,7 @@ locals {
   # Bucket names
   source_bucket_name      = "${local.name_prefix}-book-images-source"
   destination_bucket_name = "${local.name_prefix}-book-images-resized"
+  frontend_bucket_name    = "${local.name_prefix}-frontend"
 
   # DynamoDB table name
   dynamodb_table_name = "${local.name_prefix}-books"

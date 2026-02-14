@@ -33,6 +33,25 @@ module "s3_destination" {
   enable_versioning = true
   tags              = local.common_tags
 }
+# Frontend hosting bucket for static website
+module "s3_frontend" {
+  source = "../../modules/s3"
+
+  bucket_name                   = local.frontend_bucket_name
+  enable_static_website_hosting = true
+  enable_public_access          = true
+  index_document                = "index.html"
+  error_document                = "error.html"
+  tags                          = local.common_tags
+
+  bucket_policy_statement = {
+    Sid       = "PublicReadGetObject"
+    Effect    = "Allow"
+    Principal = "*"
+    Action    = "s3:GetObject"
+    Resource  = "${module.s3_frontend.bucket_arn}/*"
+  }
+}
 
 # ============================================================================
 # API Gateway
