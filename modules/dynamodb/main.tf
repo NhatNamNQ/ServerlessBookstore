@@ -2,12 +2,28 @@ resource "aws_dynamodb_table" "books" {
   name             = var.table_name
   billing_mode     = "PAY_PER_REQUEST"
   hash_key         = var.hash_key
+  range_key        = var.sort_key
   stream_enabled   = true
   stream_view_type = "NEW_AND_OLD_IMAGES"
 
   attribute {
     name = var.hash_key
     type = var.hash_key_type
+  }
+
+  attribute {
+    name = var.sort_key
+    type = var.sort_key_type
+  }
+  attribute {
+    name = "name"
+    type = "S"
+  }
+
+  local_secondary_index {
+    name            = "name-index"
+    range_key       = "name"
+    projection_type = "ALL" # Copy tất cả các cột sang Index (hoặc chọn INCLUDE/KEYS_ONLY)
   }
 
   tags = merge(
