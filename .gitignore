@@ -1,0 +1,35 @@
+# 1. Loại bỏ các file nhị phân của Terraform và thư mục cài đặt Provider
+.terraform/
+terraform-provider-*
+
+# 2. Loại bỏ các file trạng thái (State files) 
+# Những file này chứa toàn bộ thông tin hạ tầng, có thể bao gồm mật khẩu dạng plain text.
+# Tuyệt đối KHÔNG đưa lên Git. Nên dùng Backend (S3, GCS) để lưu trữ.
+*.tfstate
+*.tfstate.*
+
+# 3. Loại bỏ các file biến số nhạy cảm
+# Thường chứa các thông tin bí mật như access_key, secret_key, password.
+*.tfvars
+*.tfvars.json
+
+# 4. Loại bỏ các file biến số tự động nạp
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# 5. Loại bỏ file kế hoạch (Plan) khi xuất ra file tạm
+*.tfplan
+
+# 6. Loại bỏ các file log của CLI
+crash.log
+terraform.log
+
+# 7. Các file cấu hình của IDE (Tùy chọn)
+.vscode/
+.idea/
+.terraform.lock.hcl
+
+*.zip
+node_modules/
