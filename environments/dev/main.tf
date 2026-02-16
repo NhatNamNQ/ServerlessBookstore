@@ -27,12 +27,30 @@ module "s3_source" {
 
 # Destination bucket for resized book images
 module "s3_destination" {
-  source = "../../modules/s3"
-
-  bucket_name       = local.destination_bucket_name
-  enable_versioning = true
-  tags              = local.common_tags
+  source               = "../../modules/s3"
+  enable_public_access = true
+  bucket_name          = local.destination_bucket_name
+  enable_versioning    = true
+  tags                 = local.common_tags
 }
+
+resource "aws_s3_bucket_policy" "destination_public_policy" {
+  bucket = module.s3_destination.bucket_id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "PublicReadGetObject"
+        Effect    = "Allow"
+        Principal = "*"
+        Action    = "s3:GetObject"
+        Resource  = "${module.s3_destination.bucket_arn}/*"
+      }
+    ]
+  })
+}
+
 # Frontend hosting bucket for static website
 module "s3_frontend" {
   source = "../../modules/s3"
@@ -151,6 +169,13 @@ module "lambda_create_book" {
         "dynamodb:PutItem"
       ]
       Resource = module.dynamodb_books.table_arn
+    },
+    {
+      Effect = "Allow"
+      Action = [
+        "s3:PutObject"
+      ]
+      Resource = "${module.s3_source.bucket_arn}/*"
     }
   ]
 }
